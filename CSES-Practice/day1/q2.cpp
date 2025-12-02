@@ -1,4 +1,4 @@
-// Sorting -> Appartments
+// Sorting -> Ferris Wheel
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -59,20 +59,16 @@ const ll MOD = 1e9 + 7;
  
  
 void solve() {
-    ll n,m,k; cin>>n>>m>>k;
-    vl a(n), b(m);
-    for(ll i=0; i<n; i++)  cin>>a[i];
-    for(ll i=0; i<m; i++)  cin>>b[i];
+    ll n,x; cin>>n>>x;
+    vl a(n);
+    for(ll i=0; i<n ;i++)  cin>>a[i];
+    sortall(a);
 
-    ll ans=0;
-    sortall(a); sortall(b);
-    ll pt1=n-1, pt2=m-1;
-    while(pt1>=0 && pt2>=0) {
-        if(abs(a[pt1]-b[pt2])<=k)  {
-            ans++; pt1--; pt2--;
-        }
-        else if(a[pt1]>b[pt2]+k)  pt1--;
-        else pt2--;
+    ll pt1=0, pt2=n-1, ans=0;
+    while(pt1<=pt2) {
+        if(a[pt1]+a[pt2]>x)  pt2--;
+        else { pt1++; pt2--; }
+        ans++;
     }
 
     cout<<ans;

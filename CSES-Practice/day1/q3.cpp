@@ -1,4 +1,4 @@
-// Sorting -> Appartments
+// Sorting -> Concert Tickets
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -52,30 +52,26 @@ const ll MOD = 1e9 + 7;
 // *** NIT DGP'28  *** // 
  
 // Important Points ->
-// 1. upper_bound points to first value > val
+// 1. upper_bound points to first value > val  -> Returns set::end if fail
 // 2. lower_bound me equal to bhi aata hai (>=)
  
  
  
  
 void solve() {
-    ll n,m,k; cin>>n>>m>>k;
-    vl a(n), b(m);
-    for(ll i=0; i<n; i++)  cin>>a[i];
-    for(ll i=0; i<m; i++)  cin>>b[i];
-
-    ll ans=0;
-    sortall(a); sortall(b);
-    ll pt1=n-1, pt2=m-1;
-    while(pt1>=0 && pt2>=0) {
-        if(abs(a[pt1]-b[pt2])<=k)  {
-            ans++; pt1--; pt2--;
-        }
-        else if(a[pt1]>b[pt2]+k)  pt1--;
-        else pt2--;
+    ll n,m; cin>>n>>m;
+    multiset<ll> st;
+    for(ll i=0; i<n ;i++)  {
+        ll ele; cin>>ele;
+        st.insert(-ele);
     }
 
-    cout<<ans;
+    for(ll i=0; i<m; i++) {
+        ll x; cin>>x;
+        auto it = st.lbnd(-x);
+        if(it!=st.end())  { cout<<-(*it)<<endl; st.erase(it); }
+        else cout<<-1<<endl; 
+    }
 }
  
  

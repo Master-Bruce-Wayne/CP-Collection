@@ -1,4 +1,4 @@
-// Sorting -> Appartments
+// Sorting -> Restaurant Customers
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -52,27 +52,31 @@ const ll MOD = 1e9 + 7;
 // *** NIT DGP'28  *** // 
  
 // Important Points ->
-// 1. upper_bound points to first value > val
+// 1. upper_bound points to first value > val  -> Returns set::end if fail
 // 2. lower_bound me equal to bhi aata hai (>=)
  
  
  
- 
-void solve() {
-    ll n,m,k; cin>>n>>m>>k;
-    vl a(n), b(m);
-    for(ll i=0; i<n; i++)  cin>>a[i];
-    for(ll i=0; i<m; i++)  cin>>b[i];
+bool comp(pl& a, pl& b) {
+    return a.ff<b.ff;
+}
 
-    ll ans=0;
-    sortall(a); sortall(b);
-    ll pt1=n-1, pt2=m-1;
-    while(pt1>=0 && pt2>=0) {
-        if(abs(a[pt1]-b[pt2])<=k)  {
-            ans++; pt1--; pt2--;
-        }
-        else if(a[pt1]>b[pt2]+k)  pt1--;
-        else pt2--;
+void solve() {
+    ll n; cin>>n;
+    vpl a(2*n);
+    for(ll i=0; i<n ;i++) { 
+        ll arv; cin>>arv;
+        a[2*i].ff=arv; a[2*i].ss=1;
+        ll dep; cin>>dep;
+        a[2*i+1].ff=dep; a[2*i+1].ss=2;
+    }
+    sort(all(a), comp);
+
+    ll ans=1, curr=0;
+    for(ll i=0; i<2*n ;i++) {
+        if(a[i].ss==1)  curr++;
+        else curr--;
+        remax(ans,curr);
     }
 
     cout<<ans;
