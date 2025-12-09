@@ -1,4 +1,4 @@
-// Search and Sorting -> Subarray Sums II
+// Expo. II
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -34,6 +34,7 @@ typedef vector<pii> vpii;
 typedef vector<pl> vpl;
 typedef vector<vi> vvi;
 typedef vector<vl> vvl;
+typedef vector<string> vstr;
  
 #define whatis(x)   cout << #x << " is " << x << "\n";
 #define debug(x)     cout << #x << ": " << x << endl;
@@ -55,23 +56,33 @@ const ll MOD = 1e9 + 7;
 // 1. upper_bound points to first value > val
 // 2. lower_bound me equal to bhi aata hai (>=)
  
- 
- 
+
+// a <= 10^9 , b <= 10^9, M <= 10^9
+ll binexp(ll a, ll b, ll m){
+    a %= m;   // a <= 10^18, b <= 10^9, M <= 10^9
+    ll result = 1;
+    while(b > 0){
+        if(b & 1){
+            result = (1LL * result * a) % m;
+            // result = binMultiply(ans, a)  ->If M <= 10^18
+        }
+        a = (1LL * a * a) % m;
+        // a = binMultiply(a, a)  -> If M <= 10^18
+        b >>= 1;
+    }
+    return result;
+}
+
+ll modInverse(ll n, ll p)
+{
+    return binexp(n, p - 2, p);
+}
 
 void solve() {
-    ll n,x; cin>>n>>x;
-    vl a(n);
-    for(ll i=0; i<n ;i++)  cin>>a[i];
-
-    map<ll,ll> mpp;  mpp[0]=1;
-    ll ans=0, sum=0;
-    for(ll i=0; i<n ;i++) {
-        sum+=a[i];
-        if(mpp[sum-x])  ans+=mpp[sum-x];
-        mpp[sum]++;
-    }
-    cout<<ans;
-}
+    ll a,b,c; cin>>a>>b>>c;
+    ll powB = binexp(b,c,MOD-1);
+    cout<<binexp(a,powB,MOD);
+}  
  
  
 int main() {
@@ -79,10 +90,10 @@ int main() {
     cin.tie(NULL);
 
     ll tc = 1;
-    // cin >> tc;
+    cin >> tc;
     while(tc--){
         solve();
-        // cout << endl;
+        cout << endl;
     } 
  
     // for(int i=1;i<=tc;i++)

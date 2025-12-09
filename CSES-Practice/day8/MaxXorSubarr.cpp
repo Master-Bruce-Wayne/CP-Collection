@@ -1,4 +1,4 @@
-// Search and Sorting -> Subarray Sums II
+// Bits -> Max Xor SubArr
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -34,6 +34,7 @@ typedef vector<pii> vpii;
 typedef vector<pl> vpl;
 typedef vector<vi> vvi;
 typedef vector<vl> vvl;
+typedef vector<string> vstr;
  
 #define whatis(x)   cout << #x << " is " << x << "\n";
 #define debug(x)     cout << #x << ": " << x << endl;
@@ -55,23 +56,75 @@ const ll MOD = 1e9 + 7;
 // 1. upper_bound points to first value > val
 // 2. lower_bound me equal to bhi aata hai (>=)
  
- 
- 
+
+struct TrieNode {
+    TrieNode* links[2];
+    TrieNode() {
+        links[0]=links[1]=nullptr;
+    }
+    bool containsKey(int bit) {
+        return (links[bit]!=NULL) ;
+    }
+    TrieNode* get(int bit) {
+        return links[bit];
+    }
+    void put(int bit, TrieNode* node) {
+        links[bit]=node;
+    }
+};
+
+class Trie {
+    public :
+    TrieNode* root;
+    Trie() {
+        root=new TrieNode();
+    }
+    void insert(ll num) {
+        TrieNode* node=root;
+        for(int i=31; i>=0; i--) {
+            int bit = (num>>i)&1;
+            if(!node->containsKey(bit)) {
+                node->put(bit, new TrieNode());
+            }
+            node = node->get(bit);
+        }
+    }
+
+    ll getMaxXor(ll num) {
+        TrieNode* node=root;
+        ll maxXor=0;
+        for(int i=31; i>=0 ;i--) {
+            int bit=(num>>i)&1;
+            if(node->containsKey(1-bit)) {
+                maxXor |= (1LL<<i);
+                node=node->get(1-bit);
+            }
+            else {
+                node=node->get(bit);
+            }
+        }
+        return maxXor;
+    }
+};
 
 void solve() {
-    ll n,x; cin>>n>>x;
+    ll n; cin>>n;
     vl a(n);
-    for(ll i=0; i<n ;i++)  cin>>a[i];
+    for(ll i=0; i<n; i++)  cin>>a[i];
 
-    map<ll,ll> mpp;  mpp[0]=1;
-    ll ans=0, sum=0;
-    for(ll i=0; i<n ;i++) {
-        sum+=a[i];
-        if(mpp[sum-x])  ans+=mpp[sum-x];
-        mpp[sum]++;
+    Trie trie;
+    trie.insert(0LL);
+    ll ans=0, pref=0;
+
+    for(ll i=0; i<n; i++) {
+        pref^=a[i];
+        ans=max(ans,trie.getMaxXor(pref)) ;
+        trie.insert(pref);
     }
+
     cout<<ans;
-}
+
+}  
  
  
 int main() {
