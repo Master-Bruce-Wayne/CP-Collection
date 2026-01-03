@@ -79,22 +79,18 @@ ll modInverse(ll n, ll p)
 void solve() {
     ll n; cin>>n;
 
-    ll ndiv=1, ndiv_mod=1, sum=1, pr=1, temp=1; ll temp2=1; bool ok=true;
+    ll ndiv=1, sum=1, pr=1, temp=1;
     for(ll i=0; i<n; i++) {
         ll num, pow; cin>>num>>pow;
-        temp=(temp*binexp(num,pow,MOD))%MOD;
         ndiv=((ndiv)*(1+pow))%MOD;
-        ndiv_mod=((ndiv_mod)*(1+pow))%(MOD-1);
+
         ll p1=(((binexp(num,pow+1,MOD)-1+MOD)%MOD)*modInverse((num-1+MOD)%MOD,MOD))%MOD;
         sum=(sum*p1)%MOD;
         
-        if(pow&1)  ok=false;
-        if(ok)  temp2=(temp2*binexp(num,pow/2,MOD))%MOD;
-    }
-
-    ll expo=(ndiv*modInverse(2,MOD))%(MOD-1);
-    pr=(pr*binexp(temp,expo,MOD))%MOD;
-    if(ok)  pr=(pr*temp2)%MOD;
+        pr =((binexp(pr,pow+1,MOD))*(binexp(binexp(num, pow*(pow+1)/2,MOD),temp,MOD))) %MOD;
+        
+        temp=(temp*(pow+1))%(MOD-1);
+    } 
 
     cout<<ndiv<<" "<<sum<<" "<<pr;
 } 
