@@ -60,6 +60,8 @@ void solve() {
     vl a(n); multiset<ll> st;
     for(ll i=0; i<n;i++) { cin>>a[i]; st.insert(a[i]); }
 
+    // Huffman Coding Algorithm 
+
     ll ans=0;
     for(ll i=0; i<n-1; i++) {
         ll e1=*st.begin();  st.erase(st.begin());
